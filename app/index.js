@@ -45,7 +45,7 @@ app.post('/users', (req, res) => {
 
   const { username, email, first_name, last_name } = req.body;
 
-  db('users').insert({
+  return db('users').insert({
     username,
     email,
     first_name,
