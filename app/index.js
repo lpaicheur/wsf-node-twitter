@@ -2,6 +2,7 @@ require('dotenv').config();
 const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
+const validation = require('./validation');
 
 const db = require('knex')({
   client: 'pg',
@@ -19,29 +20,28 @@ app.get('/', (req, res) => {
 app.post('/users', (req, res) => {
   const errors = [];
   const params = {
-    username: {
-      type: 'string',
-    },
-    email: {
-      type: 'string',
-    },
-    first_name: {
-      type: 'string',
-    },
-    last_name: {
-      type: 'string',
-    },
+    username: validation.username,
+    email: validation.email,
+    first_name: validation.first_name,
+    last_name: validation.last_name,
   };
 
   _.forEach(params, (value, key) => {
     const reqValue = req.body[key];
     const param = params[key];
+    const isValid = param(reqValue);
 
-    // eslint-disable-next-line valid-typeof
-    if (typeof reqValue !== param.type) {
-      errors.push(`${key} is not valid`);
+    if (!isValid.success) {
+      errors.push(isValid.error);
     }
   });
+
+  if (errors.length > 0) {
+    return res.json({
+      errors,
+      data: {},
+    });
+  }
 
   const { username, email, first_name, last_name } = req.body;
 
@@ -51,13 +51,13 @@ app.post('/users', (req, res) => {
     first_name,
     last_name,
   })
-    .then(() => res.json({
+    .then(() => res.status(201).json({
+      statusCode: 201,
       errors,
       data: req.body,
     }))
     .catch(() => res.json({
-      statusCode: 201,
-      errors: 'error inserting',
+      errors: 'error inserting, email or username may already be taken',
       data: {},
     }));
 });
