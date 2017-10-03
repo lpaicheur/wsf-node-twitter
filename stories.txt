@@ -1,0 +1,17 @@
+- En tant que visiteur je peux :
+  - GET la liste de tous les utilisateurs (GET /users)
+  - GET un utilisateur (GET /users/{user_id}/info)
+  - GET tous les tweets / retweets postés par un utilisateur (GET /users/{user_id}/tweets)
+  - GET tous les tweets / retweets likés par un utilisateur (GET /users/{user_id}/likes)
+  - GET tous les utilisateurs qui follow un utilisateur (GET /users/{user_id}/followers)
+  - GET tous les utilisateurs que follow un utilisateur (GET /users/{user_id}/followings)
+  - M'enregister comme nouvel utilisateur (= new API key / token) (POST /users)
+
+- En tant qu'utilisateur authentifié je peux en plus :
+  - GET, PUT mes infos persos (adresse email, username, first / last name)
+  - GET, POST, DELETE mes APIs keys / tokens
+  - GET, POST, DELETE des tweets
+  - Follow / Unfollow des utilisateurs
+  - Like / Unlike des tweets
+  - Retweet des tweets
+  - Commenter des tweets
