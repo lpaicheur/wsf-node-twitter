@@ -72,7 +72,20 @@ app.get('/users', (req, res) => {
       errors: [],
       users,
     }))
-    .catch(err => res.json({
+    .catch(() => res.json({
+      errors: ['error while getting users'],
+      data: {},
+    }));
+});
+
+app.get('/users/:id/info', (req, res) => {
+  db('users').select('username', 'email', 'first_name', 'last_name', 'created_at').where('id', req.params.id)
+    .then(users => res.json({
+      statusCode: 200,
+      errors: [],
+      users,
+    }))
+    .catch(() => res.json({
       errors: ['error while getting users'],
       data: {},
     }));
