@@ -55,14 +55,11 @@ app.post('/users', (req, res) => {
       errors,
       data: req.body,
     }))
-    .catch((err) => {
-      console.log(err);
-      return res.json({
-        statusCode: 201,
-        errors: 'error inserting',
-        data: {},
-      });
-    });
+    .catch(() => res.json({
+      statusCode: 201,
+      errors: 'error inserting',
+      data: {},
+    }));
 });
 
 app.get('/users', (req, res) => {
@@ -92,5 +89,6 @@ app.get('/users/:id/info', (req, res) => {
 });
 
 app.listen(process.env.PORT || 3000, () => {
+  // eslint-disable-next-line no-console
   console.log('Example app listening on port 3000!');
 });
