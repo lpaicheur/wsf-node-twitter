@@ -62,6 +62,51 @@ app.post('/users', (req, res) => {
     }));
 });
 
+app.put('/users/:id/info', (req, res) => {
+  const errors = [];
+  const params = {
+    username: validation.username,
+    email: validation.email,
+    first_name: validation.first_name,
+    last_name: validation.last_name,
+  };
+
+  _.forEach(params, (value, key) => {
+    const reqValue = req.body[key];
+    const param = params[key];
+    const isValid = param(reqValue);
+
+    if (!isValid.success) {
+      errors.push(isValid.error);
+    }
+  });
+
+  if (errors.length > 0) {
+    return res.json({
+      errors,
+      data: {},
+    });
+  }
+
+  const { username, email, first_name, last_name } = req.body;
+
+  return db('users').where('id', req.params.id).update({
+    username,
+    email,
+    first_name,
+    last_name,
+  })
+    .then(() => res.status(201).json({
+      statusCode: 201,
+      errors,
+      data: req.body,
+    }))
+    .catch(() => res.json({
+      errors: 'error inserting, email or username may already be taken',
+      data: {},
+    }));
+});
+
 app.get('/users', (req, res) => {
   db('users').select('username', 'email', 'first_name', 'last_name', 'created_at')
     .then(users => res.json({
