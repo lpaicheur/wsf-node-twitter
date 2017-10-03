@@ -70,7 +70,7 @@ app.get('/users', (req, res) => {
     .then(users => res.json({
       statusCode: 200,
       errors: [],
-      users,
+      data: users,
     }))
     .catch(() => res.json({
       errors: ['error while getting users'],
@@ -83,7 +83,7 @@ app.get('/users/:id/info', (req, res) => {
     .then(users => res.json({
       statusCode: 200,
       errors: [],
-      users,
+      data: users,
     }))
     .catch(() => res.json({
       errors: ['error while getting users'],
