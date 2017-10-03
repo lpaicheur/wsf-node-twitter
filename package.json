@@ -19,6 +19,7 @@
     "pg": "^7.3.0"
   },
   "scripts": {
-    "start": "nodemon app/index.js"
+    "start": "node app/index.js",
+    "dev": "nodemon app/index.js"
   }
 }
