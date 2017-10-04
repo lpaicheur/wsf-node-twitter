@@ -2,10 +2,7 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(`../../config/${env}`); // eslint-disable-line import/no-dynamic-require
 
 module.exports = (req, res) => {
-  config.DB('tweets').select('id', 'message', 'retweeted_from', 'user_id', 'created_at').where({
-    user_id: req.params.user_id,
-    deleted_at: null,
-  })
+  config.DB('users').select('username', 'email', 'first_name', 'last_name', 'created_at')
     .then(rows => res.json({
       errors: [],
       data: rows,

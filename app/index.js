@@ -13,16 +13,21 @@ const app = express();
 app.use(bodyParser.json());
 
 const services = {
+  users: {
+    getAllUsers: require('./components/users/getAllUsers'),
+  },
   tweets: {
     getTweetsByUser: require('./components/tweets/getTweetsByUser'),
   },
 };
 
-app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
-
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('Welcome to twitter');
 });
+
+app.get('/users', services.users.getAllUsers);
+
+app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 
 app.post('/users', (req, res) => {
   const errors = [];
@@ -110,19 +115,6 @@ app.put('/users/:id/info', (req, res) => {
     }))
     .catch(() => res.json({
       errors: 'error inserting, email or username may already be taken',
-      data: {},
-    }));
-});
-
-app.get('/users', (req, res) => {
-  db('users').select('username', 'email', 'first_name', 'last_name', 'created_at')
-    .then(users => res.json({
-      statusCode: 200,
-      errors: [],
-      data: users,
-    }))
-    .catch(() => res.json({
-      errors: ['error while getting users'],
       data: {},
     }));
 });
