@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 
 app.get('/users', services.users.getAllUsers);
 
-app.get('/users/:id/info', services.users.getInfoByUser);
+app.get('/users/:user_id/info', services.users.getInfoByUser);
 
 app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 
