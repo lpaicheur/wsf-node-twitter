@@ -3,9 +3,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const validation = require('./validation');
 
+const env = process.env.NODE_ENV || 'development';
+const config = require(`./config/${env}`); // eslint-disable-line import/no-dynamic-require
+
 const db = require('knex')({
   client: 'pg',
-  connection: process.env.DATABASE_URL,
+  connection: config.DATABASE_URL,
 });
 
 const app = express();
@@ -140,7 +143,7 @@ app.get('/users/:id/info', (req, res) => {
     }));
 });
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(config.PORT, () => {
   // eslint-disable-next-line no-console
-  console.log('Example app listening on port 3000!');
+  console.log(`Example app listening on port ${config.PORT}!`);
 });
