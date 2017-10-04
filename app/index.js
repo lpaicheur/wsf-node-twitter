@@ -1,11 +1,14 @@
-require('dotenv').config();
 const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
+const validation = require('./validation');
+
+const env = process.env.NODE_ENV || 'development';
+const config = require(`./config/${env}`); // eslint-disable-line import/no-dynamic-require
 
 const db = require('knex')({
   client: 'pg',
-  connection: process.env.DATABASE_URL,
+  connection: config.DATABASE_URL,
 });
 
 const app = express();
@@ -19,45 +22,89 @@ app.get('/', (req, res) => {
 app.post('/users', (req, res) => {
   const errors = [];
   const params = {
-    username: {
-      type: 'string',
-    },
-    email: {
-      type: 'string',
-    },
-    first_name: {
-      type: 'string',
-    },
-    last_name: {
-      type: 'string',
-    },
+    username: validation.username,
+    email: validation.email,
+    first_name: validation.first_name,
+    last_name: validation.last_name,
   };
 
   _.forEach(params, (value, key) => {
     const reqValue = req.body[key];
     const param = params[key];
+    const isValid = param(reqValue);
 
-    // eslint-disable-next-line valid-typeof
-    if (typeof reqValue !== param.type) {
-      errors.push(`${key} is not valid`);
+    if (!isValid.success) {
+      errors.push(isValid.error);
     }
   });
 
+  if (errors.length > 0) {
+    return res.json({
+      errors,
+      data: {},
+    });
+  }
+
   const { username, email, first_name, last_name } = req.body;
 
-  db('users').insert({
+  return db('users').insert({
     username,
     email,
     first_name,
     last_name,
   })
-    .then(() => res.json({
+    .then(() => res.status(201).json({
+      statusCode: 201,
       errors,
       data: req.body,
     }))
     .catch(() => res.json({
+      errors: 'error inserting, email or username may already be taken',
+      data: {},
+    }));
+});
+
+app.put('/users/:id/info', (req, res) => {
+  const errors = [];
+  const params = {
+    username: validation.username,
+    email: validation.email,
+    first_name: validation.first_name,
+    last_name: validation.last_name,
+  };
+
+  _.forEach(params, (value, key) => {
+    const reqValue = req.body[key];
+    const param = params[key];
+    const isValid = param(reqValue);
+
+    if (!isValid.success) {
+      errors.push(isValid.error);
+    }
+  });
+
+  if (errors.length > 0) {
+    return res.json({
+      errors,
+      data: {},
+    });
+  }
+
+  const { username, email, first_name, last_name } = req.body;
+
+  return db('users').where('id', req.params.id).update({
+    username,
+    email,
+    first_name,
+    last_name,
+  })
+    .then(() => res.status(201).json({
       statusCode: 201,
-      errors: 'error inserting',
+      errors,
+      data: req.body,
+    }))
+    .catch(() => res.json({
+      errors: 'error inserting, email or username may already be taken',
       data: {},
     }));
 });
@@ -88,7 +135,7 @@ app.get('/users/:id/info', (req, res) => {
     }));
 });
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(config.PORT, () => {
   // eslint-disable-next-line no-console
-  console.log('Example app listening on port 3000!');
+  console.log(`Example app listening on port ${config.PORT}!`);
 });
