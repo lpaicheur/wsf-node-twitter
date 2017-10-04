@@ -12,6 +12,14 @@ const app = express();
 
 app.use(bodyParser.json());
 
+const services = {
+  tweets: {
+    getTweetsByUser: require('./components/tweets/getTweetsByUser'),
+  },
+};
+
+app.get('/users/:id/tweets', services.tweets.getTweetsByUser);
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
