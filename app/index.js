@@ -6,10 +6,7 @@ const validation = require('./validation');
 const env = process.env.NODE_ENV || 'development';
 const config = require(`./config/${env}`); // eslint-disable-line import/no-dynamic-require
 
-const db = require('knex')({
-  client: 'pg',
-  connection: config.DATABASE_URL,
-});
+const db = config.DB;
 
 const app = express();
 
@@ -21,7 +18,7 @@ const services = {
   },
 };
 
-app.get('/users/:id/tweets', services.tweets.getTweetsByUser);
+app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
