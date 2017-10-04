@@ -6,18 +6,33 @@ const validation = require('./validation');
 const env = process.env.NODE_ENV || 'development';
 const config = require(`./config/${env}`); // eslint-disable-line import/no-dynamic-require
 
-const db = require('knex')({
-  client: 'pg',
-  connection: config.DATABASE_URL,
-});
+const db = config.DB;
 
 const app = express();
 
 app.use(bodyParser.json());
 
+/* eslint-disable global-require */
+const services = {
+  users: {
+    getAllUsers: require('./components/users/getAllUsers'),
+    getInfoByUser: require('./components/users/getInfoByUser'),
+  },
+  tweets: {
+    getTweetsByUser: require('./components/tweets/getTweetsByUser'),
+  },
+};
+/* eslint-enable global-require */
+
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('Welcome to twitter');
 });
+
+app.get('/users', services.users.getAllUsers);
+
+app.get('/users/:id/info', services.users.getInfoByUser);
+
+app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 
 app.post('/users', (req, res) => {
   const errors = [];
@@ -105,32 +120,6 @@ app.put('/users/:id/info', (req, res) => {
     }))
     .catch(() => res.json({
       errors: 'error inserting, email or username may already be taken',
-      data: {},
-    }));
-});
-
-app.get('/users', (req, res) => {
-  db('users').select('username', 'email', 'first_name', 'last_name', 'created_at')
-    .then(users => res.json({
-      statusCode: 200,
-      errors: [],
-      data: users,
-    }))
-    .catch(() => res.json({
-      errors: ['error while getting users'],
-      data: {},
-    }));
-});
-
-app.get('/users/:id/info', (req, res) => {
-  db('users').select('username', 'email', 'first_name', 'last_name', 'created_at').where('id', req.params.id)
-    .then(users => res.json({
-      statusCode: 200,
-      errors: [],
-      data: users,
-    }))
-    .catch(() => res.json({
-      errors: ['error while getting users'],
       data: {},
     }));
 });
