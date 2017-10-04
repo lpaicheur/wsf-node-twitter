@@ -9,16 +9,13 @@ module.exports = (req, res) => {
     });
   }
 
-  config.DB('tweets').select('id', 'message', 'retweeted_from', 'user_id', 'created_at').where({
-    user_id: req.params.user_id,
-    deleted_at: null,
-  })
-    .then(rows => res.json({
+  config.DB('users').select('username', 'email', 'first_name', 'last_name', 'created_at').where('id', req.params.id)
+    .then(users => res.json({
       errors: [],
-      data: rows,
+      data: users,
     }))
     .catch(() => res.json({
-      errors: ['an error occured fetching data'],
+      errors: ['error while getting user info'],
       data: {},
     }));
 };
