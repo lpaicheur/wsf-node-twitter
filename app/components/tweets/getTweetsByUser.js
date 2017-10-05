@@ -12,7 +12,7 @@ module.exports = (req, res) => {
 
   config.DB('tweets')
     .join('users', 'tweets.user_id', 'users.id')
-    .select('users.id', 'users.first_name', 'users.last_name', 'tweets.id', 'tweets.message', 'tweets.retweeted_from', 'tweets.created_at')
+    .select('users.first_name', 'users.last_name', 'tweets.id', 'tweets.message', 'tweets.retweeted_from', 'tweets.created_at')
     .where({
       'tweets.user_id': req.params.user_id,
       'tweets.deleted_at': null,
@@ -26,6 +26,7 @@ module.exports = (req, res) => {
       }));
       const data = {
         user: {
+          id: req.params.user_id,
           first_name: rows[0].first_name,
           last_name: rows[0].last_name,
         },
