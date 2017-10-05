@@ -1,5 +1,6 @@
+/* eslint-disable import/no-dynamic-require, prefer-arrow-callback, func-names */
 const env = process.env.NODE_ENV || 'development';
-const config = require(`../../config/${env}`); // eslint-disable-line import/no-dynamic-require
+const config = require(`../../config/${env}`);
 
 module.exports = (req, res) => {
   if (!req.params.user_id || typeof req.params.user_id !== 'string') {
@@ -15,12 +16,16 @@ module.exports = (req, res) => {
       'tweets.user_id': req.params.user_id,
       'tweets.deleted_at': null,
     })
-    .then(rows => res.json({
-      errors: [],
-      data: rows,
-    }))
-    .catch(() => res.json({
-      errors: ['an error occured fetching data'],
-      data: {},
-    }));
+    .then(function (rows) {
+      return res.json({
+        errors: [],
+        data: rows,
+      });
+    })
+    .catch(function () {
+      return res.json({
+        errors: ['an error occured fetching data'],
+        data: {},
+      });
+    });
 };
