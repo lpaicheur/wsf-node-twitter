@@ -11,15 +11,29 @@ module.exports = (req, res) => {
   }
 
   config.DB('tweets')
-    .select('id', 'message', 'retweeted_from', 'created_at')
+    .join('users', 'tweets.user_id', 'users.id')
+    .select('users.id', 'users.first_name', 'users.last_name', 'tweets.id', 'tweets.message', 'tweets.retweeted_from', 'tweets.created_at')
     .where({
-      user_id: req.params.user_id,
-      deleted_at: null,
+      'tweets.user_id': req.params.user_id,
+      'tweets.deleted_at': null,
     })
     .then(function (rows) {
+      const tweets = rows.map(row => ({
+        id: row.id,
+        message: row.message,
+        created_at: row.created_at,
+        retweeted_from: row.retweeted_from,
+      }));
+      const data = {
+        user: {
+          first_name: rows[0].first_name,
+          last_name: rows[0].last_name,
+        },
+        tweets,
+      };
       return res.json({
         errors: [],
-        data: rows,
+        data,
       });
     })
     .catch(function () {
