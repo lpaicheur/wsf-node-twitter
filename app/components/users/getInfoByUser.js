@@ -1,9 +1,11 @@
+/* eslint-disable import/no-dynamic-require, prefer-arrow-callback, func-names */
 const env = process.env.NODE_ENV || 'development';
-const config = require(`../../config/${env}`); // eslint-disable-line import/no-dynamic-require
+const config = require(`../../config/${env}`);
+const schema = require('../../schema');
 
 module.exports = (req, res) => {
-  if (!req.params.user_id || typeof req.params.user_id !== 'string') {
-    res.json({
+  if (schema.id(req.params.user_id).error) {
+    return res.json({
       errors: ['user_id is not valid'],
       data: {},
     });
