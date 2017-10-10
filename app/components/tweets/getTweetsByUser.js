@@ -1,16 +1,17 @@
 /* eslint-disable import/no-dynamic-require, prefer-arrow-callback, func-names */
 const env = process.env.NODE_ENV || 'development';
 const config = require(`../../config/${env}`);
+const schema = require('../../schema');
 
 module.exports = (req, res) => {
-  if (!req.params.user_id || typeof req.params.user_id !== 'string') {
-    res.json({
+  if (schema.id(req.params.user_id).error) {
+    return res.json({
       errors: ['user_id is not valid'],
       data: {},
     });
   }
 
-  config.DB('tweets')
+  return config.DB('tweets')
     .join('users', 'tweets.user_id', 'users.id')
     .select('users.first_name', 'users.last_name', 'tweets.id', 'tweets.message', 'tweets.retweeted_from', 'tweets.created_at')
     .where({
