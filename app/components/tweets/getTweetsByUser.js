@@ -11,7 +11,7 @@ module.exports = (req, res) => {
     });
   }
 
-  return config.DB('tweets')
+  config.DB('tweets')
     .join('users', 'tweets.user_id', 'users.id')
     .select('users.first_name', 'users.last_name', 'tweets.id', 'tweets.message', 'tweets.retweeted_from', 'tweets.created_at')
     .where({
