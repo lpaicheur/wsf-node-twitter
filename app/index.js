@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 /* eslint-disable global-require */
 const services = {
   users: {
+    addUser: require('./components/users/addUser'),
     getAllUsers: require('./components/users/getAllUsers'),
     getInfoByUser: require('./components/users/getInfoByUser'),
   },
@@ -28,6 +29,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', services.users.getAllUsers);
+
+app.post('/users', services.users.addUser);
 
 app.get('/users/:user_id/info', services.users.getInfoByUser);
 
