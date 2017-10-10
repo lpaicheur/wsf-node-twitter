@@ -18,6 +18,7 @@ const services = {
     updateUser: require('./components/users/updateUser'),
   },
   tweets: {
+    addTweet: require('./components/tweets/addTweet'),
     getTweetsByUser: require('./components/tweets/getTweetsByUser'),
   },
 };
@@ -36,6 +37,8 @@ app.get('/users/:user_id/info', services.users.getInfoByUser);
 app.put('/users/:user_id/info', services.users.updateUser);
 
 app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
+
+app.post('/users/:user_id/tweets', services.tweets.addTweet);
 
 app.listen(config.PORT, () => {
   // eslint-disable-next-line no-console

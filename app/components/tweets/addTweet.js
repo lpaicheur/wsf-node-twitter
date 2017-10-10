@@ -4,30 +4,37 @@ const config = require(`../../config/${env}`);
 const schema = require('../../schema');
 
 module.exports = (req, res) => {
-  if (schema.user(req.body).error) {
+  if (schema.id(req.params.user_id).error) {
     return res.json({
-      errors: ['user is not valid'],
+      errors: ['user_id is not valid'],
       data: {},
     });
   }
 
-  const { username, email, first_name, last_name } = req.body;
+  if (schema.tweet(req.body.message).error) {
+    return res.json({
+      errors: ['message is not valid'],
+      data: {},
+    });
+  }
 
-  config.DB('users').insert({
-    username,
-    email,
-    first_name,
-    last_name,
-  })
+  const { message } = req.body;
+
+  config.DB('tweets')
+    .where('id', req.params.user_id)
+    .insert({
+      user_id: req.params.user_id,
+      message,
+    })
     .then(function () {
       return res.status(201).json({
         errors: [],
-        data: req.body,
+        data: { message: req.body.message },
       });
     })
     .catch(function () {
       return res.json({
-        errors: ['error inserting user, email or username may already be taken'],
+        errors: ['error inserting message'],
         data: {},
       });
     });

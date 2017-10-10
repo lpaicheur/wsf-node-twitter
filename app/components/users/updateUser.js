@@ -38,7 +38,7 @@ module.exports = (req, res) => {
     })
     .catch(function () {
       return res.json({
-        errors: 'error updating',
+        errors: ['error updating user'],
         data: {},
       });
     });

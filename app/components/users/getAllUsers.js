@@ -9,7 +9,7 @@ module.exports = (req, res) => {
       data: rows,
     }))
     .catch(() => res.json({
-      errors: ['an error occured fetching data'],
+      errors: ['an error occured fetching users'],
       data: {},
     }));
 };
