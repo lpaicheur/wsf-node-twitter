@@ -21,6 +21,13 @@ const services = {
     addTweet: require('./components/tweets/addTweet'),
     getTweetsByUser: require('./components/tweets/getTweetsByUser'),
   },
+  likes: {
+    getLikesByUser: require('./components/likes/getLikesByUser'),
+  },
+  follows: {
+    getFollowingsByUser: require('./components/follows/getFollowingsByUser'),
+    getFollowersByUser: require('./components/follows/getFollowersByUser'),
+  },
 };
 /* eslint-enable global-require */
 
@@ -39,6 +46,12 @@ app.put('/users/:user_id/info', services.users.updateUser);
 app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 
 app.post('/users/:user_id/tweets', services.tweets.addTweet);
+
+app.get('/users/:user_id/likes', services.likes.getLikesByUser);
+
+app.get('/users/:user_id/followers', services.follows.getFollowersByUser);
+
+app.get('/users/:user_id/followings', services.follows.getFollowingsByUser);
 
 app.listen(config.PORT, () => {
   // eslint-disable-next-line no-console
