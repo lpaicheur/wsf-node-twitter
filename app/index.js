@@ -15,6 +15,7 @@ const services = {
     addUser: require('./components/users/addUser'),
     getAllUsers: require('./components/users/getAllUsers'),
     getInfoByUser: require('./components/users/getInfoByUser'),
+    getFollowingsByUser: require('./components/users/getFollowingsByUser'),
     updateUser: require('./components/users/updateUser'),
   },
   tweets: {
@@ -39,6 +40,8 @@ app.put('/users/:user_id/info', services.users.updateUser);
 app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 
 app.post('/users/:user_id/tweets', services.tweets.addTweet);
+
+app.get('/users/:user_id/followings', services.users.getFollowingsByUser);
 
 app.listen(config.PORT, () => {
   // eslint-disable-next-line no-console
