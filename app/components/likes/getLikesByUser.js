@@ -12,9 +12,6 @@ module.exports = (req, res) => {
   }
 
   config.DB('likes')
-    .where('likes.user_id', req.params.user_id)
-    .join('tweets', 'likes.tweet_id', 'tweets.id')
-    .join('users', 'tweets.user_id', 'users.id')
     .select(
       'likes.id',
       'likes.tweet_id',
@@ -27,6 +24,9 @@ module.exports = (req, res) => {
       'users.first_name',
       'users.last_name',
     )
+    .join('tweets', 'likes.tweet_id', 'tweets.id')
+    .join('users', 'tweets.user_id', 'users.id')
+    .where('likes.user_id', req.params.user_id)
     .then(function (rows) {
       const likes = rows.map(row => ({
         id: row.id,
