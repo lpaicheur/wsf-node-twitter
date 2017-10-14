@@ -16,6 +16,7 @@ const services = {
     getAllUsers: require('./components/users/getAllUsers'),
     getInfoByUser: require('./components/users/getInfoByUser'),
     getFollowingsByUser: require('./components/users/getFollowingsByUser'),
+    getFollowersByUser: require('./components/users/getFollowersByUser'),
     updateUser: require('./components/users/updateUser'),
   },
   tweets: {
@@ -40,6 +41,8 @@ app.put('/users/:user_id/info', services.users.updateUser);
 app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 
 app.post('/users/:user_id/tweets', services.tweets.addTweet);
+
+app.get('/users/:user_id/followers', services.users.getFollowersByUser);
 
 app.get('/users/:user_id/followings', services.users.getFollowingsByUser);
 
