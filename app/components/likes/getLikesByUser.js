@@ -26,10 +26,17 @@ module.exports = (req, res) => {
       'retweets.message as retweets_message',
       'retweets.created_at as retweets_created_at',
       'retweets.user_id as retweets_user_id',
+      'retweeting.username as retweeting_username',
+      'retweeting.first_name as retweeting_first_name',
+      'retweeting.last_name as retweeting_last_name',
     )
     .leftJoin('tweets', 'likes.tweet_id', 'tweets.id')
     .leftJoin('users', 'tweets.user_id', 'users.id')
-    .where('likes.user_id', req.params.user_id)
+    .leftJoin('tweets as retweets', 'tweets.retweeted_from', 'retweets.id')
+    .leftJoin('users as retweeting', 'retweets.user_id', 'retweeting.id')
+    .where({
+      'likes.user_id': req.params.user_id,
+    })
     .then(function (rows) {
       console.log(rows);
       const likes = rows.map((row) => {
@@ -41,6 +48,9 @@ module.exports = (req, res) => {
             created_at: row.retweets_created_at,
             user: {
               user_id: row.retweets_user_id,
+              username: row.retweeting_username,
+              first_name: row.retweeting_first_name,
+              last_name: row.retweeting_last_name,
             },
           };
         }
