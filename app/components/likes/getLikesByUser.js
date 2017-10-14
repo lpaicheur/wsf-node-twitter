@@ -13,6 +13,9 @@ module.exports = (req, res) => {
 
   config.DB('likes')
     .select(
+      'self.username as self_username',
+      'self.first_name as self_first_name',
+      'self.last_name as self_last_name',
       'likes.id',
       'likes.tweet_id',
       'likes.created_at as likes_created_at',
@@ -30,6 +33,7 @@ module.exports = (req, res) => {
       'retweeting.first_name as retweeting_first_name',
       'retweeting.last_name as retweeting_last_name',
     )
+    .leftJoin('users as self', 'likes.user_id', 'self.id')
     .leftJoin('tweets', 'likes.tweet_id', 'tweets.id')
     .leftJoin('users', 'tweets.user_id', 'users.id')
     .leftJoin('tweets as retweets', 'tweets.retweeted_from', 'retweets.id')
@@ -38,7 +42,6 @@ module.exports = (req, res) => {
       'likes.user_id': req.params.user_id,
     })
     .then(function (rows) {
-      console.log(rows);
       const likes = rows.map((row) => {
         let retweet = null;
         if (row.retweeted_from) {
@@ -74,6 +77,9 @@ module.exports = (req, res) => {
       const data = {
         user: {
           user_id: req.params.user_id,
+          username: rows[0].self_username,
+          first_name: rows[0].self_first_name,
+          last_name: rows[0].self_last_name,
         },
         likes,
       };
@@ -82,8 +88,7 @@ module.exports = (req, res) => {
         data,
       });
     })
-    .catch(function (err) {
-      console.log(err);
+    .catch(function () {
       return res.json({
         errors: ['an error occured fetching followers'],
         data: {},
