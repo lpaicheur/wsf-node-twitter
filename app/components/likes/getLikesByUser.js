@@ -12,41 +12,74 @@ module.exports = (req, res) => {
   }
 
   config.DB('likes')
-    .where('likes.user_id', req.params.user_id)
-    .join('tweets', 'likes.tweet_id', 'tweets.id')
-    .join('users', 'tweets.user_id', 'users.id')
     .select(
+      'users.username',
+      'users.first_name',
+      'users.last_name',
       'likes.id',
       'likes.tweet_id',
       'likes.created_at as likes_created_at',
       'tweets.message',
       'tweets.user_id',
-      'tweets.retweeted_from',
       'tweets.created_at',
-      'users.username',
-      'users.first_name',
-      'users.last_name',
+      'tweets.retweeted_from',
+      'tweeting.username as tweeting_username',
+      'tweeting.first_name as tweeting_first_name',
+      'tweeting.last_name as tweeting_last_name',
+      'retweets.message as retweets_message',
+      'retweets.created_at as retweets_created_at',
+      'retweets.user_id as retweets_user_id',
+      'retweeting.username as retweeting_username',
+      'retweeting.first_name as retweeting_first_name',
+      'retweeting.last_name as retweeting_last_name',
     )
+    .leftJoin('users', 'likes.user_id', 'users.id')
+    .leftJoin('tweets', 'likes.tweet_id', 'tweets.id')
+    .leftJoin('users as tweeting', 'tweets.user_id', 'tweeting.id')
+    .leftJoin('tweets as retweets', 'tweets.retweeted_from', 'retweets.id')
+    .leftJoin('users as retweeting', 'retweets.user_id', 'retweeting.id')
+    .where({
+      'likes.user_id': req.params.user_id,
+    })
     .then(function (rows) {
-      const likes = rows.map(row => ({
-        id: row.id,
-        created_at: row.likes_created_at,
-        tweet: {
-          id: row.tweet_id,
-          created_at: row.created_at,
-          message: row.message,
-          user: {
-            id: row.user_id,
-            username: row.username,
-            last_name: row.last_name,
-            first_name: row.first_name,
+      const likes = rows.map((row) => {
+        let retweet = null;
+        if (row.retweeted_from) {
+          retweet = {
+            tweet_id: row.retweeted_from,
+            message: row.retweets_message,
+            created_at: row.retweets_created_at,
+            user: {
+              user_id: row.retweets_user_id,
+              username: row.retweeting_username,
+              first_name: row.retweeting_first_name,
+              last_name: row.retweeting_last_name,
+            },
+          };
+        }
+        return {
+          like_id: row.id,
+          created_at: row.likes_created_at,
+          tweet: {
+            tweet_id: row.tweet_id,
+            message: row.message,
+            created_at: row.created_at,
+            user: {
+              user_id: row.user_id,
+              username: row.tweeting_username,
+              first_name: row.tweeting_first_name,
+              last_name: row.tweeting_last_name,
+            },
+            retweeted_from: retweet,
           },
-          retweeted_from: row.retweeted_from,
-        },
-      }));
+        };
+      });
       const data = {
         user: {
-          id: req.params.user_id,
+          user_id: req.params.user_id,
+          username: rows[0].username,
+          first_name: rows[0].first_name,
+          last_name: rows[0].last_name,
         },
         likes,
       };
@@ -55,8 +88,7 @@ module.exports = (req, res) => {
         data,
       });
     })
-    .catch(function (err) {
-      console.log(err);
+    .catch(function () {
       return res.json({
         errors: ['an error occured fetching followers'],
         data: {},

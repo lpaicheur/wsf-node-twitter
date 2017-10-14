@@ -11,7 +11,9 @@ module.exports = (req, res) => {
     });
   }
 
-  config.DB('users').select('username', 'email', 'first_name', 'last_name', 'created_at').where('id', req.params.user_id)
+  config.DB('users')
+    .select('username', 'email', 'first_name', 'last_name', 'created_at')
+    .where('id', req.params.user_id)
     .then(users => res.json({
       errors: [],
       data: users,
