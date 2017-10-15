@@ -10,7 +10,7 @@ const server = require('../app/index');
 const expect = chai.expect;
 
 const user = {
-  id: 'c57ac4db-4514-4582-9bb5-bd73541cac1e',
+  id: '3f6889ee-b4d2-4629-99df-cabc09ef9c40',
 };
 
 chai.use(chaiHttp);
@@ -109,6 +109,41 @@ describe('/GET users/:user_id/tweets', () => {
           'retweeted_from',
         );
         expect(res.body.data.tweets).to.be.an('array');
+        done();
+      });
+  });
+});
+
+describe('/GET users/:user_id/likes', () => {
+  it('it should GET the user\'s likes', (done) => {
+    chai.request(server)
+      .get(`/users/${user.id}/likes`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        checkSuccesObjectStructure(res);
+        expect(res.body.data).to.have.all.keys(
+          'user',
+          'likes',
+        );
+        expect(res.body.data.likes).to.be.an('array');
+        expect(res.body.data.user).to.have.all.keys(
+          'user_id',
+          'username',
+          'first_name',
+          'last_name',
+        );
+        expect(res.body.data.likes[0]).to.have.all.keys(
+          'like_id',
+          'created_at',
+          'tweet',
+        );
+        expect(res.body.data.likes[0].tweet).to.have.all.keys(
+          'tweet_id',
+          'message',
+          'created_at',
+          'user',
+          'retweeted_from',
+        );
         done();
       });
   });
