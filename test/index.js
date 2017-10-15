@@ -24,8 +24,7 @@ const checkSuccesStructure = (res) => {
 
 const checkErrorStructure = (res) => {
   const { data, errors } = res.body;
-  expect(data).to.be.an('array');
-  expect(data.length).to.be.eql(0);
+  expect(data).to.be.an('object');
   expect(errors).to.be.an('array');
   expect(errors.length).to.be.not.eql(0);
 };

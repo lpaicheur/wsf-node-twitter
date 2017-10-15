@@ -7,7 +7,7 @@ module.exports = (req, res) => {
   if (schema.id(req.params.user_id).error) {
     return res.json({
       errors: ['user_id is not valid'],
-      data: [],
+      data: {},
     });
   }
 
@@ -23,7 +23,7 @@ module.exports = (req, res) => {
     .catch(function () {
       return res.json({
         errors: ['error while getting user info'],
-        data: [],
+        data: {},
       });
     });
 };
