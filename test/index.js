@@ -15,9 +15,16 @@ const user = {
 
 chai.use(chaiHttp);
 
-const checkSuccesStructure = (res) => {
+const checkSuccesArrayStructure = (res) => {
   const { data, errors } = res.body;
   expect(data).to.be.an('array');
+  expect(errors).to.be.an('array');
+  expect(errors.length).to.be.eql(0);
+};
+
+const checkSuccesObjectStructure = (res) => {
+  const { data, errors } = res.body;
+  expect(data).to.be.an('object');
   expect(errors).to.be.an('array');
   expect(errors.length).to.be.eql(0);
 };
@@ -35,7 +42,7 @@ describe('/GET users', () => {
       .get('/users')
       .end((err, res) => {
         expect(res).to.have.status(200);
-        checkSuccesStructure(res);
+        checkSuccesArrayStructure(res);
         expect(res.body.data[0]).to.have.all.keys(
           'user_id',
           'username',
@@ -55,7 +62,7 @@ describe('/GET users/:user_id/info', () => {
       .get(`/users/${user.id}/info`)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        checkSuccesStructure(res);
+        checkSuccesArrayStructure(res);
         expect(res.body.data[0]).to.have.all.keys(
           'user_id',
           'username',
@@ -73,6 +80,35 @@ describe('/GET users/:user_id/info', () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         checkErrorStructure(res);
+        done();
+      });
+  });
+});
+
+describe('/GET users/:user_id/tweets', () => {
+  it('it should GET the user\'s tweets', (done) => {
+    chai.request(server)
+      .get(`/users/${user.id}/tweets`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        checkSuccesObjectStructure(res);
+        expect(res.body.data).to.have.all.keys(
+          'user',
+          'tweets',
+        );
+        expect(res.body.data.user).to.have.all.keys(
+          'user_id',
+          'username',
+          'first_name',
+          'last_name',
+        );
+        expect(res.body.data.tweets[0]).to.have.all.keys(
+          'tweet_id',
+          'message',
+          'created_at',
+          'retweeted_from',
+        );
+        expect(res.body.data.tweets).to.be.an('array');
         done();
       });
   });
