@@ -11,7 +11,8 @@
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
     "mocha": "^4.0.1",
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.12.1",
+    "nyc": "^11.2.1"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -24,7 +25,7 @@
   "scripts": {
     "start": "node app/index.js",
     "dev": "nodemon app/index.js",
-    "test": "mocha --timeout 10000",
-    "test:watch": "yarn test -- --watch"
+    "test": "mocha --timeout 10000 --exit",
+    "coverage": "nyc yarn test"
   }
 }
