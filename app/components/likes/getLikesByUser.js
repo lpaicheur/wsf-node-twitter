@@ -90,7 +90,7 @@ module.exports = (req, res) => {
     })
     .catch(function () {
       return res.json({
-        errors: ['an error occured fetching followers'],
+        errors: ['an error occured fetching likes'],
         data: {},
       });
     });

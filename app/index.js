@@ -57,3 +57,5 @@ app.listen(config.PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Example app listening on port ${config.PORT}!`);
 });
+
+module.exports = app; // for testing

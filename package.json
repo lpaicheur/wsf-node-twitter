@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
     "eslint": "^3.19.0 || ^4.3.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
-    "nodemon": "^1.12.1"
+    "mocha": "^4.0.1",
+    "nodemon": "^1.12.1",
+    "nyc": "^11.2.1"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -20,6 +24,8 @@
   },
   "scripts": {
     "start": "node app/index.js",
-    "dev": "nodemon app/index.js"
+    "dev": "nodemon app/index.js",
+    "test": "mocha --timeout 10000 --exit",
+    "coverage": "nyc yarn test"
   }
 }
