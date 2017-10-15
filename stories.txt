@@ -16,3 +16,7 @@
   - Like / Unlike des tweets
   - Retweet des tweets
   - Commenter des tweets
+
+Notes:
+getInfoByUser.js
+-> return error if user deleted ?

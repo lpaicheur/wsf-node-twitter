@@ -13,7 +13,10 @@ module.exports = (req, res) => {
 
   config.DB('users')
     .select('id as user_id', 'username', 'email', 'first_name', 'last_name', 'created_at')
-    .where('id', req.params.user_id)
+    .where({
+      id: req.params.user_id,
+      deleted_at: null,
+    })
     .then(function (rows) {
       return res.json({
         errors: [],
