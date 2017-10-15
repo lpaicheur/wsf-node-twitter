@@ -148,3 +148,28 @@ describe('/GET users/:user_id/likes', () => {
       });
   });
 });
+
+describe('/POST users', () => {
+  it('it should POST a new user', (done) => {
+    chai.request(server)
+      .post('/users')
+      .send({
+        username: 'mocha',
+        email: 'mocha@test.fr',
+        first_name: 'mocha',
+        last_name: 'test',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        checkSuccesObjectStructure(res);
+        expect(res.body.data).to.have.all.keys(
+          'user_id',
+          'username',
+          'email',
+          'first_name',
+          'last_name',
+        );
+        done();
+      });
+  });
+});

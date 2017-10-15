@@ -40,8 +40,17 @@ module.exports = (req, res) => {
     .leftJoin('users as retweeting', 'retweets.user_id', 'retweeting.id')
     .where({
       'likes.user_id': req.params.user_id,
+      'likes.deleted_at': null,
+      'tweets.deleted_at': null,
+      'users.deleted_at': null,
     })
     .then(function (rows) {
+      if (!rows.length) {
+        return res.json({
+          errors: ['no likes found'],
+          data: {},
+        });
+      }
       const likes = rows.map((row) => {
         let retweet = null;
         if (row.retweeted_from) {

@@ -12,8 +12,6 @@ module.exports = (req, res) => {
   }
 
   config.DB('follows')
-    .where('is_following', req.params.user_id)
-    .join('users', 'follows.is_following', 'users.id')
     .select(
       'follows.id',
       'follows.is_following',
@@ -22,6 +20,12 @@ module.exports = (req, res) => {
       'users.first_name',
       'users.last_name',
     )
+    .join('users', 'follows.is_following', 'users.id')
+    .where({
+      is_following: req.params.user_id,
+      'follows.deleted_at': null,
+      'users.deleted_at': null,
+    })
     .then(function (rows) {
       const followers = rows.map(row => ({
         id: row.id,

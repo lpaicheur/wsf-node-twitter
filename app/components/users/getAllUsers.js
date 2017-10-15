@@ -5,6 +5,10 @@ const config = require(`../../config/${env}`);
 module.exports = (req, res) => {
   config.DB('users')
     .select('id as user_id', 'username', 'email', 'first_name', 'last_name', 'created_at')
+    .orderBy('created_at', 'desc')
+    .where({
+      deleted_at: null,
+    })
     .then(function (rows) {
       return res.json({
         errors: [],
