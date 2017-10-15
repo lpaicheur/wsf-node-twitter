@@ -10,6 +10,10 @@ const app = express();
 app.use(bodyParser.json());
 
 /* eslint-disable global-require */
+const middlewares = {
+  auth: require('./middlewars/auth.js'),
+};
+
 const services = {
   users: {
     addUser: require('./components/users/addUser'),
@@ -41,7 +45,7 @@ app.post('/users', services.users.addUser);
 
 app.get('/users/:user_id/info', services.users.getInfoByUser);
 
-app.put('/users/:user_id/info', services.users.updateUser);
+app.put('/users/:user_id/info', middlewares.auth, services.users.updateUser);
 
 app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 
