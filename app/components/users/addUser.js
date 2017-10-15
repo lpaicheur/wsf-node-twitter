@@ -13,19 +13,26 @@ module.exports = (req, res) => {
 
   const { username, email, first_name, last_name } = req.body;
 
-  config.DB('users').insert({
-    username,
-    email,
-    first_name,
-    last_name,
-  })
-    .then(function () {
-      return res.status(201).json({
-        errors: [],
-        data: req.body,
-      });
+  config.DB('users')
+    .insert({
+      username,
+      email,
+      first_name,
+      last_name,
     })
-    .catch(function () {
+    .returning('id')
+    .then(function (rows) {
+      return res
+        .status(201)
+        .json({
+          errors: [],
+          data: {
+            user_id: rows[0],
+            ...req.body,
+          },
+        });
+    })
+    .catch(function (err) {
       return res.json({
         errors: ['error inserting user, email or username may already be taken'],
         data: {},
