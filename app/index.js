@@ -71,4 +71,5 @@ app.listen(config.PORT, () => {
   console.log(`Example app listening on port ${config.PORT}!`);
 });
 
-module.exports = app; // for testing
+// Export for testing
+module.exports = app;
