@@ -39,22 +39,31 @@ app.get('/', (req, res) => {
   res.send('Welcome to twitter');
 });
 
+// Get all users
 app.get('/users', services.users.getAllUsers);
 
+// Add a new user
 app.post('/users', services.users.addUser);
 
+// Get user's infos
 app.get('/users/:user_id/info', services.users.getInfoByUser);
 
+// Update user's infos
 app.put('/users/:user_id/info', middlewares.auth, services.users.updateUser);
 
+// Get user's tweets
 app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 
+// Add a new tweet
 app.post('/users/:user_id/tweets', services.tweets.addTweet);
 
+// Get user's likes
 app.get('/users/:user_id/likes', services.likes.getLikesByUser);
 
+// Get the people following a user
 app.get('/users/:user_id/followers', services.follows.getFollowersByUser);
 
+// Get the people a user follows
 app.get('/users/:user_id/followings', services.follows.getFollowingsByUser);
 
 app.listen(config.PORT, () => {
