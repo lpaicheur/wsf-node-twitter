@@ -19,3 +19,8 @@ exports.user = value => Joi.validate(value, userSchema);
 const tweetSchema = Joi.string().min(1).max(140).required();
 
 exports.tweet = value => Joi.validate(value, tweetSchema);
+
+// Validation for a message
+const messageSchema = Joi.string().min(1).max(280).required();
+
+exports.message = value => Joi.validate(value, messageSchema);
