@@ -26,6 +26,8 @@ const services = {
     getTweetsByUser: require('./components/tweets/getTweetsByUser'),
   },
   likes: {
+    likeATweet: require('./components/likes/likeATweet'),
+    unlikeATweet: require('./components/likes/unlikeATweet'),
     getLikesByUser: require('./components/likes/getLikesByUser'),
   },
   follows: {
@@ -65,6 +67,12 @@ app.get('/users/:user_id/followers', services.follows.getFollowersByUser);
 
 // Get the people a user follows
 app.get('/users/:user_id/followings', services.follows.getFollowingsByUser);
+
+// Like a tweet
+app.get('/tweets/:tweet_id/like', middlewares.auth, services.likes.likeATweet);
+
+// Unlikes a tweet
+app.get('/tweets/:tweet_id/unlike', middlewares.auth, services.likes.unlikeATweet);
 
 app.listen(config.PORT, () => {
   // eslint-disable-next-line no-console

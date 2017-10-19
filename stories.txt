@@ -13,7 +13,7 @@
   - GET, POST, DELETE mes APIs keys / tokens
   - GET, POST, DELETE des tweets
   - Follow / Unfollow des utilisateurs
-  - Like / Unlike des tweets
+  * Like / Unlike des tweets
   - Retweet des tweets
   - Commenter des tweets
 
@@ -24,3 +24,5 @@ getLikesByUser.js
 -> how to hide deleted retweet user without hidding tweet
 all
 -> send 500 error when request to DB failed (.catch) ?
+likeATweet
+-> on tweet can be liked multiple time by the same user
