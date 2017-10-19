@@ -44,17 +44,20 @@ module.exports = (req, res, next) => {
     })
     .then(function (rows) {
       if (!rows.length) {
-        return res.json({
-          errors: ['error authentificating'],
-          data: {},
-        });
+        return res
+          .status(401)
+          .json({
+            errors: ['error authentificating'],
+            data: {},
+          });
       }
       return next();
     })
     .catch(function () {
-      return res.json({
-        errors: ['error authentificating'],
-        data: {},
-      });
+      return res
+        .json({
+          errors: ['error authentificating'],
+          data: {},
+        });
     });
 };

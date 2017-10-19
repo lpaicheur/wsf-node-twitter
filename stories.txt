@@ -22,3 +22,5 @@ getInfoByUser.js
 -> return error if user deleted ?
 getLikesByUser.js
 -> how to hide deleted retweet user without hidding tweet
+all
+-> send 500 error when request to DB failed (.catch) ?
