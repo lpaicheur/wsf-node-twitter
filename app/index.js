@@ -20,6 +20,8 @@ const services = {
     getAllUsers: require('./components/users/getAllUsers'),
     getInfoByUser: require('./components/users/getInfoByUser'),
     updateUser: require('./components/users/updateUser'),
+    followAUser: require('./components/users/followAUser'),
+    unFollowAUser: require('./components/users/unFollowAUser'),
   },
   tweets: {
     addTweet: require('./components/tweets/addTweet'),
@@ -77,6 +79,12 @@ app.get('/tweets/:tweet_id/unlike', middlewares.auth, services.likes.unlikeATwee
 
 // Retweet a tweet
 app.post('/tweets/:tweet_id/retweet', middlewares.auth, services.tweets.retweetATweet);
+
+// Follow a user, here user_id is the user to follow
+app.get('/users/:follow_user_id/follow', middlewares.auth, services.users.followAUser);
+
+// Unfollow a user, here user_id is the user to follow
+app.get('/users/:follow_user_id/unfollow', middlewares.auth, services.users.unFollowAUser);
 
 app.listen(config.PORT, () => {
   // eslint-disable-next-line no-console
