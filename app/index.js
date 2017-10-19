@@ -27,6 +27,7 @@ const services = {
     addTweet: require('./components/tweets/addTweet'),
     getTweetsByUser: require('./components/tweets/getTweetsByUser'),
     retweetATweet: require('./components/tweets/retweetATweet'),
+    commentATweet: require('./components/tweets/commentATweet'),
   },
   likes: {
     likeATweet: require('./components/likes/likeATweet'),
@@ -83,8 +84,11 @@ app.post('/tweets/:tweet_id/retweet', middlewares.auth, services.tweets.retweetA
 // Follow a user, here user_id is the user to follow
 app.get('/users/:follow_user_id/follow', middlewares.auth, services.users.followAUser);
 
-// Unfollow a user, here user_id is the user to follow
+// Unfollow a user, here user_id is the user to unfollow
 app.get('/users/:follow_user_id/unfollow', middlewares.auth, services.users.unFollowAUser);
+
+// Comment a tweet
+app.post('/tweets/:tweet_id/comment', middlewares.auth, services.tweets.commentATweet);
 
 app.listen(config.PORT, () => {
   // eslint-disable-next-line no-console
