@@ -28,7 +28,10 @@ module.exports = (req, res) => {
           errors: [],
           data: {
             user_id: rows[0],
-            ...req.body,
+            username,
+            email,
+            first_name,
+            last_name,
           },
         });
     })
