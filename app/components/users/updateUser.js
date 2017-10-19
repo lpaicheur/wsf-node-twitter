@@ -33,7 +33,13 @@ module.exports = (req, res) => {
         .status(201)
         .json({
           errors: [],
-          data: { id: req.params.user_id, ...req.body },
+          data: {
+            id: req.params.user_id,
+            username,
+            email,
+            first_name,
+            last_name,
+          },
         });
     })
     .catch(function () {
