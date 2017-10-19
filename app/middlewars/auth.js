@@ -25,8 +25,6 @@ module.exports = (req, res, next) => {
   })
   */
 
-  console.log(req.header('X-API-Key'));
-
   if (!req.header('X-API-Key') || !req.header('X-API-Token')) {
     return res.json({
       errors: ['error authentificating'],
@@ -35,7 +33,7 @@ module.exports = (req, res, next) => {
   }
 
   config.DB('tokens')
-    .select('id as user_id')
+    .select('user_id')
     .where({
       api_key: req.header('X-API-Key'),
       api_token: req.header('X-API-Token'),
@@ -51,6 +49,7 @@ module.exports = (req, res, next) => {
             data: {},
           });
       }
+      req.user_id = rows[0].user_id;
       return next();
     })
     .catch(function () {
