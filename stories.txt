@@ -14,7 +14,7 @@
   - GET, POST, DELETE des tweets
   - Follow / Unfollow des utilisateurs
   * Like / Unlike des tweets
-  - Retweet des tweets
+  * Retweet des tweets
   - Commenter des tweets
 
 Notes:
