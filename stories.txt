@@ -26,3 +26,5 @@ all
 -> send 500 error when request to DB failed (.catch) ?
 likeATweet
 -> on tweet can be liked multiple time by the same user
+likeATweet, retweetATweet
+-> improve response

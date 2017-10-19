@@ -24,6 +24,7 @@ const services = {
   tweets: {
     addTweet: require('./components/tweets/addTweet'),
     getTweetsByUser: require('./components/tweets/getTweetsByUser'),
+    retweetATweet: require('./components/tweets/retweetATweet'),
   },
   likes: {
     likeATweet: require('./components/likes/likeATweet'),
@@ -73,6 +74,9 @@ app.get('/tweets/:tweet_id/like', middlewares.auth, services.likes.likeATweet);
 
 // Unlikes a tweet
 app.get('/tweets/:tweet_id/unlike', middlewares.auth, services.likes.unlikeATweet);
+
+// Retweet a tweet
+app.post('/tweets/:tweet_id/retweet', middlewares.auth, services.tweets.retweetATweet);
 
 app.listen(config.PORT, () => {
   // eslint-disable-next-line no-console
