@@ -39,6 +39,11 @@ const services = {
     getFollowingsByUser: require('./components/follows/getFollowingsByUser'),
     getFollowersByUser: require('./components/follows/getFollowersByUser'),
   },
+  tokens: {
+    addToken: require('./components/tokens/addToken'),
+    getTokensByUser: require('./components/tokens/getTokensByUser'),
+    deleteToken: require('./components/tokens/deleteToken'),
+  },
 };
 /* eslint-enable global-require */
 
@@ -93,6 +98,15 @@ app.get('/users/:follow_user_id/unfollow', middlewares.auth, services.users.unFo
 
 // Comment a tweet
 app.post('/tweets/:tweet_id/comment', middlewares.auth, services.tweets.commentATweet);
+
+// Get user's tokens
+app.get('/tokens', middlewares.auth, services.tokens.getTokensByUser);
+
+// Add token
+app.post('/tokens', middlewares.auth, services.tokens.addToken);
+
+// Delete token
+app.post('/tokens/:token_id/delete', middlewares.auth, services.tokens.deleteToken);
 
 app.listen(config.PORT, () => {
   // eslint-disable-next-line no-console

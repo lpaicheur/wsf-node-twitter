@@ -9,9 +9,9 @@
     -> enregistrer un nouveau token à l'inscription
 
 - En tant qu'utilisateur authentifié je peux en plus :
-  - GET, PUT mes infos persos (adresse email, username, first / last name)
-  - GET, POST, DELETE mes APIs keys / tokens
-  - GET, POST, DELETE des tweets
+  * GET, PUT mes infos persos (adresse email, username, first / last name)
+  * GET, POST, DELETE mes APIs keys / tokens
+  * GET, POST, DELETE des tweets
   * Follow / Unfollow des utilisateurs
   * Like / Unlike des tweets
   * Retweet des tweets
