@@ -26,10 +26,12 @@ module.exports = (req, res, next) => {
   */
 
   if (!req.header('X-API-Key') || !req.header('X-API-Token')) {
-    return res.json({
-      errors: ['error authentificating'],
-      data: {},
-    });
+    return res
+      .status(401)
+      .json({
+        errors: ['error authentificating'],
+        data: {},
+      });
   }
 
   config.DB('tokens')

@@ -5,8 +5,7 @@
   * GET tous les tweets / retweets likés par un utilisateur (GET /users/{user_id}/likes)
   * GET tous les utilisateurs qui follow un utilisateur (GET /users/{user_id}/followers)
   * GET tous les utilisateurs que follow un utilisateur (GET /users/{user_id}/followings)
-  ~ M'enregister comme nouvel utilisateur (= new API key / token) (POST /users)
-    -> enregistrer un nouveau token à l'inscription
+  * M'enregister comme nouvel utilisateur (= new API key / token) (POST /users)
 
 - En tant qu'utilisateur authentifié je peux en plus :
   * GET, PUT mes infos persos (adresse email, username, first / last name)
