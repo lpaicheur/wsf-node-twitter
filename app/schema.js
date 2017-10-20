@@ -24,3 +24,8 @@ exports.tweet = value => Joi.validate(value, tweetSchema);
 const messageSchema = Joi.string().min(1).max(280).required();
 
 exports.message = value => Joi.validate(value, messageSchema);
+
+// Validation for a token
+const tokenSchema = Joi.string().token().required();
+
+exports.token = value => Joi.validate(value, tokenSchema);
