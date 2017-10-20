@@ -3,7 +3,7 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(`../config/${env}`);
 
 module.exports = (req, res, next) => {
-  // Validation pour headers
+  // Verify if X-API-Key and X-API-Token headers are present
   if (!req.header('X-API-Key') || !req.header('X-API-Token')) {
     return res
       .status(401)
@@ -13,6 +13,7 @@ module.exports = (req, res, next) => {
       });
   }
 
+  // Verify if X-API-Key and X-API-Token headers match a valid user
   config.DB('tokens')
     .select('user_id')
     .where({
@@ -22,6 +23,7 @@ module.exports = (req, res, next) => {
       deleted_at: null,
     })
     .then(function (rows) {
+      // If no match return 401 status
       if (!rows.length) {
         return res
           .status(401)
@@ -30,6 +32,7 @@ module.exports = (req, res, next) => {
             data: {},
           });
       }
+      // If match call next()
       req.user_id = rows[0].user_id;
       return next();
     })
