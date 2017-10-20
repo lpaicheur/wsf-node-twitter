@@ -46,9 +46,11 @@ module.exports = (req, res) => {
       });
     })
     .catch(function () {
-      return res.json({
-        errors: ['an error occured fetching followers'],
-        data: {},
-      });
+      return res
+        .status(400)
+        .json({
+          errors: ['an error occured fetching followers'],
+          data: {},
+        });
     });
 };

@@ -43,16 +43,20 @@ module.exports = (req, res) => {
             });
         })
         .catch(function () {
-          return res.json({
-            errors: ['error creating token'],
-            data: {},
-          });
+          return res
+            .status(400)
+            .json({
+              errors: ['error creating token'],
+              data: {},
+            });
         });
     })
     .catch(function () {
-      return res.json({
-        errors: ['error inserting user, email or username may already be taken'],
-        data: {},
-      });
+      return res
+        .status(400)
+        .json({
+          errors: ['error inserting user, email or username may already be taken'],
+          data: {},
+        });
     });
 };

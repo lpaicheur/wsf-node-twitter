@@ -29,9 +29,11 @@ module.exports = (req, res) => {
         });
     })
     .catch(function () {
-      return res.json({
-        errors: ['error deleting tweet'],
-        data: {},
-      });
+      return res
+        .status(400)
+        .json({
+          errors: ['error deleting tweet'],
+          data: {},
+        });
     });
 };

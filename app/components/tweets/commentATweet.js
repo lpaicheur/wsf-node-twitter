@@ -33,9 +33,11 @@ module.exports = (req, res) => {
       });
     })
     .catch(function () {
-      return res.json({
-        errors: ['error inserting message'],
-        data: {},
-      });
+      return res
+        .status(400)
+        .json({
+          errors: ['error inserting message'],
+          data: {},
+        });
     });
 };

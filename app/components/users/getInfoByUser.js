@@ -24,9 +24,11 @@ module.exports = (req, res) => {
       });
     })
     .catch(function () {
-      return res.json({
-        errors: ['error while getting user info'],
-        data: {},
-      });
+      return res
+        .status(400)
+        .json({
+          errors: ['error while getting user info'],
+          data: {},
+        });
     });
 };
