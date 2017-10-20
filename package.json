@@ -26,7 +26,7 @@
     "start": "node app/index.js",
     "dev": "nodemon app/index.js",
     "test": "mocha --timeout 10000 --exit",
-    "coverage": "nyc yarn test"
+    "coverage": "nyc npm run test"
   },
   "engines": {
     "node": "8.0.0"
