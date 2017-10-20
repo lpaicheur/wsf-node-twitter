@@ -53,6 +53,7 @@ module.exports = (req, res) => {
       }
       const likes = rows.map((row) => {
         let retweet = null;
+        // If tweet has been retweeted find the tweet and user that retweeted
         if (row.retweeted_from) {
           retweet = {
             tweet_id: row.retweeted_from,
