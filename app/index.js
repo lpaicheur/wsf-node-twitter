@@ -70,7 +70,7 @@ app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 app.post('/users/:user_id/tweets', middlewares.auth, services.tweets.addTweet);
 
 // Delete a tweet
-app.get('/tweets/:tweet_id/delete', middlewares.auth, services.tweets.deleteTweet);
+app.delete('/tweets/:tweet_id/delete', middlewares.auth, services.tweets.deleteTweet);
 
 // Get user's likes
 app.get('/users/:user_id/likes', services.likes.getLikesByUser);
@@ -106,7 +106,7 @@ app.get('/tokens', middlewares.auth, services.tokens.getTokensByUser);
 app.post('/tokens', middlewares.auth, services.tokens.addToken);
 
 // Delete token
-app.post('/tokens/:token_id/delete', middlewares.auth, services.tokens.deleteToken);
+app.delete('/tokens/:token_id/delete', middlewares.auth, services.tokens.deleteToken);
 
 app.listen(config.PORT, () => {
   // eslint-disable-next-line no-console
