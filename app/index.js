@@ -51,6 +51,9 @@ app.get('/', (req, res) => {
   res.send('Welcome to twitter');
 });
 
+/*
+  USERS
+*/
 // Get all users
 app.get('/users', services.users.getAllUsers);
 
@@ -69,9 +72,6 @@ app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 // Add a new tweet
 app.post('/users/:user_id/tweets', middlewares.auth, services.tweets.addTweet);
 
-// Delete a tweet
-app.delete('/tweets/:tweet_id/delete', middlewares.auth, services.tweets.deleteTweet);
-
 // Get user's likes
 app.get('/users/:user_id/likes', services.likes.getLikesByUser);
 
@@ -81,6 +81,15 @@ app.get('/users/:user_id/followers', services.follows.getFollowersByUser);
 // Get the people a user follows
 app.get('/users/:user_id/followings', services.follows.getFollowingsByUser);
 
+// Follow a user, here user_id is the user to follow
+app.get('/users/:follow_user_id/follow', middlewares.auth, services.users.followAUser);
+
+// Unfollow a user, here user_id is the user to unfollow
+app.get('/users/:follow_user_id/unfollow', middlewares.auth, services.users.unFollowAUser);
+
+/*
+  TWEETS
+*/
 // Like a tweet
 app.get('/tweets/:tweet_id/like', middlewares.auth, services.likes.likeATweet);
 
@@ -88,17 +97,17 @@ app.get('/tweets/:tweet_id/like', middlewares.auth, services.likes.likeATweet);
 app.get('/tweets/:tweet_id/unlike', middlewares.auth, services.likes.unlikeATweet);
 
 // Retweet a tweet
-app.post('/tweets/:tweet_id/retweet', middlewares.auth, services.tweets.retweetATweet);
-
-// Follow a user, here user_id is the user to follow
-app.get('/users/:follow_user_id/follow', middlewares.auth, services.users.followAUser);
-
-// Unfollow a user, here user_id is the user to unfollow
-app.get('/users/:follow_user_id/unfollow', middlewares.auth, services.users.unFollowAUser);
+app.get('/tweets/:tweet_id/retweet', middlewares.auth, services.tweets.retweetATweet);
 
 // Comment a tweet
 app.post('/tweets/:tweet_id/comment', middlewares.auth, services.tweets.commentATweet);
 
+// Delete a tweet
+app.delete('/tweets/:tweet_id/delete', middlewares.auth, services.tweets.deleteTweet);
+
+/*
+  TOKENS
+*/
 // Get user's tokens
 app.get('/tokens', middlewares.auth, services.tokens.getTokensByUser);
 

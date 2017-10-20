@@ -11,21 +11,12 @@ module.exports = (req, res) => {
     });
   }
 
-  if (schema.tweet(req.body.message).error) {
-    return res.json({
-      errors: ['message is not valid'],
-      data: {},
-    });
-  }
-
   const { tweet_id } = req.params;
-  const { message } = req.body;
 
   config.DB('tweets')
     .insert({
       user_id: req.user_id,
       retweeted_from: tweet_id,
-      message,
     })
     .then(function () {
       return res.status(201).json({
