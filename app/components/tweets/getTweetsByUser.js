@@ -71,9 +71,11 @@ module.exports = (req, res) => {
       });
     })
     .catch(function () {
-      return res.json({
-        errors: ['an error occured fetching data'],
-        data: {},
-      });
+      return res
+        .status(400)
+        .json({
+          errors: ['an error occured fetching data'],
+          data: {},
+        });
     });
 };

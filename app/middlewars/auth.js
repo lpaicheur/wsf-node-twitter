@@ -54,6 +54,7 @@ module.exports = (req, res, next) => {
     })
     .catch(function () {
       return res
+        .status(400)
         .json({
           errors: ['error authentificating'],
           data: {},
