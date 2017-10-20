@@ -28,6 +28,7 @@ const services = {
     getTweetsByUser: require('./components/tweets/getTweetsByUser'),
     retweetATweet: require('./components/tweets/retweetATweet'),
     commentATweet: require('./components/tweets/commentATweet'),
+    deleteTweet: require('./components/tweets/deleteTweet'),
   },
   likes: {
     likeATweet: require('./components/likes/likeATweet'),
@@ -61,7 +62,10 @@ app.put('/users/:user_id/info', middlewares.auth, services.users.updateUser);
 app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 
 // Add a new tweet
-app.post('/users/:user_id/tweets', services.tweets.addTweet);
+app.post('/users/:user_id/tweets', middlewares.auth, services.tweets.addTweet);
+
+// Delete a tweet
+app.get('/tweets/:tweet_id/delete', middlewares.auth, services.tweets.deleteTweet);
 
 // Get user's likes
 app.get('/users/:user_id/likes', services.likes.getLikesByUser);
