@@ -97,7 +97,7 @@ app.get('/tweets/:tweet_id/like', middlewares.auth, services.likes.likeATweet);
 app.get('/tweets/:tweet_id/unlike', middlewares.auth, services.likes.unlikeATweet);
 
 // Retweet a tweet
-app.post('/tweets/:tweet_id/retweet', middlewares.auth, services.tweets.retweetATweet);
+app.get('/tweets/:tweet_id/retweet', middlewares.auth, services.tweets.retweetATweet);
 
 // Comment a tweet
 app.post('/tweets/:tweet_id/comment', middlewares.auth, services.tweets.commentATweet);
