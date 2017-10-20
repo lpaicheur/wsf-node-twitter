@@ -22,20 +22,34 @@ module.exports = (req, res) => {
     })
     .returning('id')
     .then(function (rows) {
-      return res
-        .status(201)
-        .json({
-          errors: [],
-          data: {
-            user_id: rows[0],
-            username,
-            email,
-            first_name,
-            last_name,
-          },
+      config.DB('tokens')
+        .insert({
+          user_id: rows[0],
+          api_token: config.DB.raw('uuid_generate_v4()'),
+          api_key: config.DB.raw('uuid_generate_v4()'),
+        })
+        .then(function () {
+          return res
+            .status(201)
+            .json({
+              errors: [],
+              data: {
+                user_id: rows[0],
+                username,
+                email,
+                first_name,
+                last_name,
+              },
+            });
+        })
+        .catch(function () {
+          return res.json({
+            errors: ['error creating token'],
+            data: {},
+          });
         });
     })
-    .catch(function (err) {
+    .catch(function () {
       return res.json({
         errors: ['error inserting user, email or username may already be taken'],
         data: {},
