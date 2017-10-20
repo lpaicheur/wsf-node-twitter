@@ -15,15 +15,3 @@
   * Like / Unlike des tweets
   * Retweet des tweets
   * Commenter des tweets
-
-Notes:
-getInfoByUser.js
--> return error if user deleted ?
-getLikesByUser.js
--> how to hide deleted retweet user without hidding tweet
-all
--> send 500 error when request to DB failed (.catch) ?
-likeATweet
--> on tweet can be liked multiple time by the same user
-likeATweet, retweetATweet, follow, Unfollow, commentATweet
--> improve response
